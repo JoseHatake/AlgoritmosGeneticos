@@ -7,8 +7,6 @@ package agproyecto;
 
 import graficar.Graficar;
 import poblacion.Generacion;
-import poblacion.Individuo;
-import poblacion.Poblacion;
 
 /**
  *
@@ -30,7 +28,7 @@ public class AGProyecto {
     }
 
     public static void pactica3() throws CloneNotSupportedException{
-    	generacion = new Generacion(6,10);
+    	generacion = new Generacion(8,32);
     	grafica = new Graficar();
     	grafica.setNombreFrame("Generación 1");
     	grafica.setTitutlo("Probabilidad de la primera generación");
