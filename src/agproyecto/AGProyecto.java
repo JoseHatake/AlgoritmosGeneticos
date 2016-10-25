@@ -28,7 +28,7 @@ public class AGProyecto {
     }
 
     public static void pactica3() throws CloneNotSupportedException{
-    	generacion = new Generacion(8,32);
+    	generacion = new Generacion(8,10);
     	grafica = new Graficar();
     	grafica.setNombreFrame("Generación 1");
     	grafica.setTitutlo("Probabilidad de la primera generación");

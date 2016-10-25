@@ -55,8 +55,8 @@ public class Generacion {
             in = actual.getIndividuo(x);
             System.out.println(num+1 + "\t | " + in + " |\t " + in.valor() + " |\t " + in.aptitud() + " |\t " + actual.probabilidad(num++));
         }
-        System.out.println("Suma valor: " + actual.valor());
-        System.out.println("Promedio: " + actual.promedioValor());
+        System.out.println("Suma valor: " + actual.aptitud());
+        System.out.println("Promedio: " + actual.promedioAptitud());
         System.out.println("Max: " + actual.maxAptitud());
     }
 
@@ -76,8 +76,8 @@ public class Generacion {
             in = actual.getIndividuo(x);
             System.out.println(num+1 + "\t | " + ante + " |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
         }
-        System.out.println("Suma valor: " + actual.valor());
-        System.out.println("Promedio: " + actual.promedioValor());
+        System.out.println("Suma valor: " + actual.aptitud());
+        System.out.println("Promedio: " + actual.promedioAptitud());
         System.out.println("Max: " + actual.maxAptitud());
     }
 
@@ -97,8 +97,8 @@ public class Generacion {
             in = actual.getIndividuo(x);
             System.out.println(num++ + "\t | " + ante + " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
         }
-        System.out.println("Suma valor: " + actual.valor());
-        System.out.println("Promedio: " + actual.promedioValor());
+        System.out.println("Suma valor: " + actual.aptitud());
+        System.out.println("Promedio: " + actual.promedioAptitud());
         System.out.println("Max: " + actual.maxAptitud());
     }
     
