@@ -5,6 +5,7 @@
  */
 package poblacion;
 
+import com.sun.media.sound.AlawCodec;
 import java.util.ArrayList;
 
 /**
@@ -17,6 +18,10 @@ public class Individuo{
     public Individuo(Integer numAlelos){
         individuo = new ArrayList<Alelo>();
         generarIndivudio(numAlelos);
+    }
+    
+    public Individuo(Individuo in){
+        individuo = in.getArrayAlelos();
     }
     
     public Individuo(ArrayList<Alelo> indi){

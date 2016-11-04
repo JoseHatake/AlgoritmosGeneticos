@@ -43,8 +43,8 @@ public class Generacion {
         return sumAptitud;
     }
 
-    public void imprimirDatosDeGeneracion(){
-        Integer poblacionAImprimir = 0;
+    public void imprimirDatosDeGeneracion(Integer generacion){
+        Integer poblacionAImprimir = generacion;
         Integer num;
         Poblacion actual;
         Individuo in;
@@ -60,9 +60,9 @@ public class Generacion {
         System.out.println("Max: " + actual.maxAptitud());
     }
 
-    public void imprimirDatosDeCruza() throws CloneNotSupportedException{
-        Integer poblacionAImprimir = 1;
-        Integer poblacionAnterior = 0;
+    public void imprimirDatosDeCruza(Integer generacion) throws CloneNotSupportedException{
+        Integer poblacionAnterior = generacion;
+        Integer poblacionAImprimir = generacion + 1;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
@@ -81,9 +81,9 @@ public class Generacion {
         System.out.println("Max: " + actual.maxAptitud());
     }
 
-    public void imprimirDatosDeMutacion(){
-        Integer poblacionAImprimir = 2;
-        Integer poblacionAnterior = 1;
+    public void imprimirDatosDeMutacion(Integer generacion) throws CloneNotSupportedException{
+        Integer poblacionAnterior = generacion + 1;
+        Integer poblacionAImprimir = generacion + 2;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
@@ -130,5 +130,22 @@ public class Generacion {
     @Override
     public String toString(){
     	return poblacion.get(0) + "\n\tGeneraciones: " + poblacion.size();
+    }
+    
+    public ArrayList<Double> minimos(Integer numGen) {
+        ArrayList<Double> min = new ArrayList<Double>();
+        for(int x = 0; x < numGen; x++){//x * 2 (+2 por generacion)
+            min.add(poblacion.get((x*2)+2).min());
+        }
+        return min;
+    }
+
+    public ArrayList<Double> maximos(Integer numGen) {
+        ArrayList<Double> max = new ArrayList<Double>();
+        for(int x = 0; x < numGen; x++){//x * 2 (+2 por generacion)
+            //System.out.println((x*2)+2 + " -- " + poblacion.get((x*2)+2).maxAptitud() + " -- " + poblacion.get((x*2)+2) + " -- " + poblacion.get((x*2)+2).max());
+            max.add(poblacion.get((x*2)+2).max());
+        }
+        return max;
     }
 }

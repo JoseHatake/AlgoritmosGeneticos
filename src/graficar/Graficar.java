@@ -54,10 +54,11 @@ public class Graficar {
         dataset.removeAllSeries();
     }
 
-    private void generarSerie(ArrayList<Double> datos,String nombre){
+    public void addSerie(ArrayList<Double> datos,String nombre){
         series = new XYSeries(nombre);
         int size = datos.size();
         for (int x = 1;x<=size;x++) {
+            //System.out.println(x + " " + datos.get(x-1));
             series.add(x,datos.get(x-1));
         }
         dataset.addSeries(series);
@@ -76,8 +77,7 @@ public class Graficar {
         );
     }
 
-    public void dibujaGrafica(ArrayList<Double> datos,String nombre){
-        generarSerie(datos,nombre);
+    public void dibujaGrafica(){
         construirGrafica();
         frame = new ChartFrame(nombreFrame, chart);
         frame.pack();

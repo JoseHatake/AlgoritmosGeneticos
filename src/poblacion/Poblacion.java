@@ -132,17 +132,20 @@ public class Poblacion {
 
     /**
      * La mutación se hace a un alelo de todos los individuos aleatoriamente
+     * @return 
      */
-    public Poblacion muta1(){
+    public Poblacion muta1() throws CloneNotSupportedException{
     	Random rn = new Random();
-    	ArrayList<Individuo> auxIND = individuos;
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
     	Integer tmp,al,in,aux;
-    	al = auxIND.get(0).getAlelos();
-        in = auxIND.size();
+        Individuo auxIndi;
+    	al = individuos.get(0).getAlelos();
+        in = individuos.size();
     	for (int x = 0; x < in;x++) {
             tmp = rn.nextInt(al);
-            aux = new Alelo(auxIND.get(x).get(tmp).getValor()).cambiarValor().getValor();
-            auxIND.get(x).reamplazarAlelo(tmp, aux);
+            auxIndi = new Individuo(individuos.get(x));
+            auxIndi.get(tmp).cambiarValor();
+            auxIND.add(auxIndi);
     	}
     	return new Poblacion(auxIND,getPuntoDeCruza());
     }
@@ -152,6 +155,24 @@ public class Poblacion {
         for(Individuo in: individuos){
         	System.out.print(aux++ +" : " + in);
         }
+    }
+    
+    public Double min(){
+        Double aux = max();
+        for(int x = 0;x < individuos.size();x++){
+            if(individuos.get(x).aptitud() < aux)
+                aux = individuos.get(x).aptitud();
+        }
+        return aux;
+    }
+    
+    public Double max(){
+        Double aux = 0.0;
+        for(int x = 0;x < individuos.size();x++){
+            if(individuos.get(x).aptitud() > aux)
+                aux = individuos.get(x).aptitud();
+        }
+        return aux;
     }
 
     @Override
