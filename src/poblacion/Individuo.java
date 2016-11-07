@@ -5,7 +5,6 @@
  */
 package poblacion;
 
-import com.sun.media.sound.AlawCodec;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +20,7 @@ public class Individuo{
     }
     
     public Individuo(Individuo in){
-        individuo = in.getArrayAlelos();
+        individuo = (ArrayList<Alelo>) in.getArrayAlelos().clone();
     }
     
     public Individuo(ArrayList<Alelo> indi){
@@ -55,7 +54,11 @@ public class Individuo{
     }
 
     public Double aptitud(){
-        return Math.pow(this.valor(),2);
+        Double x,operacion;
+        x = this.valor();
+        operacion = ((x-5)/(2+Math.sin(x)));
+        //operacion = Math.pow(this.valor(),2);
+        return Math.abs(operacion);
     }
 
     public Double valor(){

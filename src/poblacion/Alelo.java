@@ -42,7 +42,7 @@ public class Alelo {
         if (alelo == 0)
             alelo = 1;
         else
-            alelo = 1;
+            alelo = 0;
         return this;
     }
     

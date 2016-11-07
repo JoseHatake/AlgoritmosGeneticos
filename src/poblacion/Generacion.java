@@ -81,14 +81,14 @@ public class Generacion {
         System.out.println("Max: " + actual.maxAptitud());
     }
 
-    public void imprimirDatosDeMutacion(Integer generacion) throws CloneNotSupportedException{
+    public void imprimirDatosDeMutacion(Integer generacion,Double porcentaje) throws CloneNotSupportedException{
         Integer poblacionAnterior = generacion + 1;
         Integer poblacionAImprimir = generacion + 2;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
         num = 1;
-        poblacion.add(poblacion.get(poblacionAnterior).muta1());
+        poblacion.add(poblacion.get(poblacionAnterior).muta1(porcentaje));
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
         System.out.println("No.\t | Descendencia\t | Mutación | Valor X\t\t | Aptitud F(x) = x^2\n");

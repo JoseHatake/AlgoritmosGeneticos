@@ -134,20 +134,40 @@ public class Poblacion {
      * La mutación se hace a un alelo de todos los individuos aleatoriamente
      * @return 
      */
-    public Poblacion muta1() throws CloneNotSupportedException{
+    public Poblacion muta1(Double porcentaje) throws CloneNotSupportedException{
     	Random rn = new Random();
     	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
-    	Integer tmp,al,in,aux;
+        ArrayList<Integer> cambios = individuosAMutar(porcentaje);
+    	Integer tmp,al,in,aux,contador;
         Individuo auxIndi;
     	al = individuos.get(0).getAlelos();
         in = individuos.size();
+        contador = 0;
     	for (int x = 0; x < in;x++) {
-            tmp = rn.nextInt(al);
-            auxIndi = new Individuo(individuos.get(x));
-            auxIndi.get(tmp).cambiarValor();
-            auxIND.add(auxIndi);
+            if(cambios.get(contador) == x){
+                tmp = rn.nextInt(al);
+                auxIndi = new Individuo(individuos.get(x));
+                auxIndi.get(tmp).cambiarValor();
+                auxIND.add(auxIndi);
+            }
+            else{
+                auxIndi = new Individuo(individuos.get(x));
+                auxIND.add(auxIndi);
+            }
     	}
     	return new Poblacion(auxIND,getPuntoDeCruza());
+    }
+    
+    private ArrayList<Integer> individuosAMutar(Double porcentaje){
+        ArrayList<Integer> seleccion = new ArrayList<Integer>();
+        Random rn = new Random();
+        Integer cantidad =0;
+        Double aux = porcentaje*individuos.size()/100;
+        cantidad = aux.intValue();
+        for(int x = 0;x<cantidad;x++){
+            seleccion.add(rn.nextInt(individuos.size()));
+        }
+        return seleccion;
     }
     
     public void imprimirPoblacion(){
@@ -155,6 +175,46 @@ public class Poblacion {
         for(Individuo in: individuos){
         	System.out.print(aux++ +" : " + in);
         }
+    }
+    
+    private Double ruleta(){
+        Random rn = new Random();
+        return rn.nextInt(100)*1.0/100.0;
+    }
+    
+    private Individuo acumulado(Double ac){
+        Double cumulo = 0.0;
+        Integer tmp = 0;
+        for(int x = 0;x<individuos.size();x++){
+            if(ac >= cumulo)
+                cumulo += probabilidad(x);
+            else{
+                tmp = x;
+                break;
+            }
+        }
+        return individuos.get(tmp);
+    }
+    
+    public void seleccionarPorRuleta(){
+        ArrayList<Individuo> newPoblacion =  new ArrayList<Individuo>();
+        newPoblacion.add(maxAlelo());
+        for(int x = 0;x < individuos.size()-1;x++){
+            newPoblacion.add(acumulado(ruleta()));
+        }
+        individuos = newPoblacion;
+    }
+    
+    public Individuo maxAlelo(){
+        Double aux = 0.0;
+        Individuo in = null;
+        for(int x = 0;x < individuos.size();x++){
+            if(individuos.get(x).aptitud() > aux){
+                aux = individuos.get(x).aptitud();
+                in = individuos.get(x);
+            }
+        }
+        return in;
     }
     
     public Double min(){
