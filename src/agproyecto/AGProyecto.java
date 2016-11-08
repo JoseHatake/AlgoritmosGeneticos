@@ -64,8 +64,9 @@ public class AGProyecto {
     }
     
     public static void pactica5() throws CloneNotSupportedException{
-        Integer numGen = 50;//10,30,50,100
+        Integer numGen = 100;//10,30,50,100
         Double porcientoAMutar = 30.0;
+        Double torneo = 70.0;
     	generacion = new Generacion(4,16);
     	grafica = new Graficar();
     	grafica.setNombreFrame("Generaciones");
@@ -77,7 +78,8 @@ public class AGProyecto {
             generacion.imprimirDatosDeGeneracion(x*2);
             generacion.imprimirDatosDeCruza(x*2);
             generacion.imprimirDatosDeMutacion(x*2,porcientoAMutar);
-            generacion.get((x+1)*2).seleccionarPorRuleta();
+            //generacion.get((x+1)*2).seleccionarPorRuleta();
+            generacion.get((x+1)*2).seleccionarPorTorneoP(torneo);
         }
         grafica.addSerie(generacion.maximos(numGen),"Máximos");
         grafica.addSerie(generacion.minimos(numGen),"Mínimos");

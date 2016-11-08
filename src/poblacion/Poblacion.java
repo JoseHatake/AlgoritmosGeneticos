@@ -177,9 +177,14 @@ public class Poblacion {
         }
     }
     
-    private Double ruleta(){
+    private Double ruletaDouble(){
         Random rn = new Random();
         return rn.nextInt(100)*1.0/100.0;
+    }
+    
+    private Integer ruletaInteger(){
+        Random rn = new Random();
+        return rn.nextInt(100);
     }
     
     private Individuo acumulado(Double ac){
@@ -196,11 +201,54 @@ public class Poblacion {
         return individuos.get(tmp);
     }
     
+    private Individuo torneo(Double torneo){
+        Random rn = new Random();
+        Integer rn1,rn2;
+        rn1 = rn.nextInt(individuos.size());
+        rn2 = rn.nextInt(individuos.size());
+        return competir(individuos.get(rn1),individuos.get(rn2),torneo);
+    }
+    
+    private Individuo competir(Individuo in1, Individuo in2,Double torneo){
+        Double aux1,aux2;
+        Integer mayor,menor;
+        aux1 = in1.aptitud();
+        aux2 = in2.aptitud();
+        if (aux1 > aux2){
+            mayor = 1;
+            menor = 2;
+        }
+        else{
+            mayor = 2;
+            menor = 1;
+        }
+        
+        if(ganador(torneo,mayor,menor) == 1)
+            return in1;
+        else
+            return in2;
+    }
+    
+    private Integer ganador(Double torneo,Integer mayor,Integer menor){
+        if(ruletaDouble() <= torneo)
+            return mayor;
+        else
+            return menor;
+    }
+    
     public void seleccionarPorRuleta(){
         ArrayList<Individuo> newPoblacion =  new ArrayList<Individuo>();
         newPoblacion.add(maxAlelo());
         for(int x = 0;x < individuos.size()-1;x++){
-            newPoblacion.add(acumulado(ruleta()));
+            newPoblacion.add(acumulado(ruletaDouble()));
+        }
+        individuos = newPoblacion;
+    }
+    
+    public void seleccionarPorTorneoP(Double torneo){
+        ArrayList<Individuo> newPoblacion = new ArrayList<Individuo>();
+        for(int x = 0; x < individuos.size();x++){
+            newPoblacion.add(torneo(torneo));
         }
         individuos = newPoblacion;
     }
