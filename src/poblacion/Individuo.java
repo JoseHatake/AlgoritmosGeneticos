@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Hatake
  */
-public class Individuo{
+public class Individuo implements Comparable{
     private ArrayList<Alelo> individuo;
 
     public Individuo(Integer numAlelos){
@@ -114,5 +114,10 @@ public class Individuo{
         for(Alelo al: individuo)
             buff += al.getValor();
     	return buff + "";
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.aptitud().compareTo(((Individuo)o).aptitud());
     }
 }

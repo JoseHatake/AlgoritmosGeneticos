@@ -6,6 +6,8 @@
 package poblacion;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +17,7 @@ import java.util.logging.Logger;
  * @author Hatake
  */
 public class Poblacion {
-	private ArrayList<Individuo> individuos;
+    private ArrayList<Individuo> individuos;
     private ArrayList<Integer> puntoDeCruza;
 
     public Poblacion(Integer alelos,Integer individuos){
@@ -51,8 +53,13 @@ public class Poblacion {
     	}
     }
 
-    public double probabilidad(Integer individuo){
+    public Double probabilidad(Integer individuo){
     	return individuos.get(individuo).aptitud()*1.0/aptitud()*1.0;
+    }
+    
+    public Double probabilidadRnaking(Integer individuo, Double S){
+        Integer miu = individuos.size();
+        return ((2.0-S)/miu)+(((2*individuo)*(S-1))/(miu*(miu-1.0)));
     }
 
     public Double aptitud() {
@@ -201,6 +208,35 @@ public class Poblacion {
         return individuos.get(tmp);
     }
     
+    private ArrayList<Integer> ordenaLosIndividuosPorAptitud(){
+        ArrayList<Individuo> tmp = new ArrayList<Individuo>(individuos);
+        ArrayList<Integer> aux = new ArrayList<Integer>();
+        Collections.sort(tmp);
+        for(Individuo in:tmp){
+            for(int x = 0;x<individuos.size();x++){
+                if(in.equals(individuos.get(x)))
+                    aux.add(x);
+            }
+        }
+        return aux;
+        //Hacer metodo de ordenamiento para generar el oden por aptitus osea 5,3,8,1,4,2,6,7
+    }
+    
+    private Individuo acumuladoRanking(Double ac,Double S){
+        Double cumulo = 0.0;
+        Integer tmp = 0;
+        ArrayList<Integer> ordenPorAptitud = ordenaLosIndividuosPorAptitud();
+        for(int x = 0;x<individuos.size();x++){
+            if(ac >= cumulo)
+                cumulo += probabilidadRnaking(ordenPorAptitud.get(x),S);
+            else{
+                tmp = x;
+                break;
+            }
+        }
+        return individuos.get(tmp);
+    }
+    
     private Individuo torneo(Double torneo){
         Random rn = new Random();
         Integer rn1,rn2;
@@ -241,6 +277,23 @@ public class Poblacion {
         newPoblacion.add(maxAlelo());
         for(int x = 0;x < individuos.size()-1;x++){
             newPoblacion.add(acumulado(ruletaDouble()));
+        }
+        individuos = newPoblacion;
+    }
+    
+    public void seleccionarPorRuletaConRanking(Double S){
+        ArrayList<Individuo> newPoblacion =  new ArrayList<Individuo>();
+        newPoblacion.add(maxAlelo());
+        if(S > 2.0){
+            S = 2.0;
+            System.out.println("El valor de S supera el valor tope y fue reasignado por el valor: " + S);
+        }
+        else if(S < 1.0){
+            S = 1.0;
+            System.out.println("El valor de S es menor que el valor nímino y fue reasignado por el valor: " + S);
+        }
+        for(int x = 0;x < individuos.size()-1;x++){
+            newPoblacion.add(acumuladoRanking(ruletaDouble(),S));
         }
         individuos = newPoblacion;
     }
