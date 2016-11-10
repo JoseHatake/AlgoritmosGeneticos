@@ -24,7 +24,7 @@ public class AGProyecto {
     }
 
     public AGProyecto() throws CloneNotSupportedException{
-        pactica6();
+        pactica5();
     }
 
     public static void pactica3() throws CloneNotSupportedException{
@@ -64,10 +64,10 @@ public class AGProyecto {
     }
     
     public static void pactica5() throws CloneNotSupportedException{
-        Integer numGen = 50;//10,30,50,100
+        Integer numGen = 10;//10,30,50,100
         Double porcientoAMutar = 30.0;
         Double torneo = 70.0;
-    	generacion = new Generacion(12,32);
+    	generacion = new Generacion(4,16);
     	grafica = new Graficar();
     	grafica.setNombreFrame("Generaciones");
     	grafica.setTitutlo("Probabilidad del fitness de generación");

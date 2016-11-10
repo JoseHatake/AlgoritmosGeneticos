@@ -145,35 +145,62 @@ public class Poblacion {
     	Random rn = new Random();
     	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
         ArrayList<Integer> cambios = individuosAMutar(porcentaje);
-    	Integer tmp,al,in,aux,contador;
+    	Integer tmp,al,in,aux,contador,stop;
         Individuo auxIndi;
     	al = individuos.get(0).getAlelos();
         in = individuos.size();
         contador = 0;
-    	for (int x = 0; x < in;x++) {
-            if(cambios.get(contador) == x){
-                tmp = rn.nextInt(al);
-                auxIndi = new Individuo(individuos.get(x));
-                auxIndi.get(tmp).cambiarValor();
-                auxIND.add(auxIndi);
-            }
-            else{
+        stop = cambios.size();
+        if(cambios.isEmpty()){
+            for(int x = 0; x < in; x++){
                 auxIndi = new Individuo(individuos.get(x));
                 auxIND.add(auxIndi);
             }
-    	}
+        }
+        else{
+            for (int x = 0; x < in;x++) {
+                if(cambios.get(contador) == x){
+                    tmp = rn.nextInt(al);
+                    auxIndi = new Individuo(individuos.get(x));
+                    auxIndi.get(tmp).cambiarValor();
+                    auxIND.add(auxIndi);
+                    contador++;
+                    if(contador == stop)
+                        contador = 0;
+                }
+                else{
+                    auxIndi = new Individuo(individuos.get(x));
+                    auxIND.add(auxIndi);
+                }
+            }
+        }
     	return new Poblacion(auxIND,getPuntoDeCruza());
     }
     
     private ArrayList<Integer> individuosAMutar(Double porcentaje){
         ArrayList<Integer> seleccion = new ArrayList<Integer>();
         Random rn = new Random();
-        Integer cantidad =0;
+        Integer cantidad,tmp;
+        Boolean flag;
+        cantidad = 0;
         Double aux = porcentaje*individuos.size()/100;
         cantidad = aux.intValue();
         for(int x = 0;x<cantidad;x++){
-            seleccion.add(rn.nextInt(individuos.size()));
+            tmp = rn.nextInt(individuos.size());
+            flag = false;
+            do{
+                for(Integer comp:seleccion){
+                    if(tmp.equals(comp)){
+                        flag = true;
+                        tmp = rn.nextInt(individuos.size());
+                    }
+                    else
+                        flag = false;
+                }
+            }while(flag);
+            seleccion.add(tmp);
         }
+        Collections.sort(seleccion);
         return seleccion;
     }
     
