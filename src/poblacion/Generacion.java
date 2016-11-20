@@ -59,36 +59,64 @@ public class Generacion {
         System.out.println("Promedio: " + actual.promedioAptitud());
         System.out.println("Max: " + actual.maxAptitud());
     }
+    
+    public void cruzaUnPunto(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaUnPunto());
+    }
+    
+    public void cruzaDosPuntos(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaDosPuntos());
+    }
+    
+    public void cruzaUniforme(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaUniforme());
+    }
+    
+    public void cruzaAcentuada(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaAcentuada());
+    }
 
-    public void imprimirDatosDeCruza(Integer generacion) throws CloneNotSupportedException{
+    public void imprimirDatosDeCruza(Integer generacion){
         Integer poblacionAnterior = generacion;
         Integer poblacionAImprimir = generacion + 1;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
         num = 0;
-        poblacion.add(poblacion.get(poblacionAnterior).cruza1());
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
-        System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
-        for (int x = 0;x<actual.getIndividuos();x++) {
-            ante = aux.getIndividuo(x);
-            in = actual.getIndividuo(x);
-            System.out.println(num+1 + "\t | " + ante + " |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+        if(actual.getPuntoDeCruza().isEmpty()){
+            System.out.println("No.\t | Cruza\t | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.println(++num + "\t | " + ante + " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+            }
+        }
+        else{
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.println(num+1 + "\t | " + ante + " |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+            }
         }
         System.out.println("Suma valor: " + actual.aptitud());
         System.out.println("Promedio: " + actual.promedioAptitud());
         System.out.println("Max: " + actual.maxAptitud());
     }
+    
+    public void mutaPorPorcentaje(Integer generacion,Double porcentaje) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion + 1).muta1(porcentaje));
+    }
 
-    public void imprimirDatosDeMutacion(Integer generacion,Double porcentaje) throws CloneNotSupportedException{
+    public void imprimirDatosDeMutacion(Integer generacion,Double porcentaje){
         Integer poblacionAnterior = generacion + 1;
         Integer poblacionAImprimir = generacion + 2;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
         num = 1;
-        poblacion.add(poblacion.get(poblacionAnterior).muta1(porcentaje));
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
         System.out.println("No.\t | Descendencia\t | Mutación | Valor X\t\t | Aptitud F(x) = x^2\n");

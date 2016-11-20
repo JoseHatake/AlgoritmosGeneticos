@@ -112,7 +112,7 @@ public class Poblacion {
      * Primera mutación simple, se intercambian los cromozomas de dos 
      * individuos dependiendo del punto de cruza aleatorio
      */
-    public Poblacion cruza1() throws CloneNotSupportedException{
+    public Poblacion cruzaUnPunto() throws CloneNotSupportedException{
     	Random rn = new Random();
     	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
         ArrayList<Integer> pCruza = new ArrayList<Integer>();
@@ -137,6 +137,136 @@ public class Poblacion {
         return new Poblacion(auxIND, pCruza);
     }
 
+    /**
+     * Dos puntos de cruza aleatorios
+     */
+    public Poblacion cruzaDosPuntos() throws CloneNotSupportedException{
+    	Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<Integer> pCruza = new ArrayList<Integer>();
+        Individuo inaux,inaux2;
+    	Integer in,al,pc1,pc2;
+        Boolean flag;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i += 2){
+            flag = true;
+            pc1 = rn.nextInt(al);
+            do{
+                pc2 = rn.nextInt(al);
+                if(pc2 >= pc1)
+                    flag = false;
+            }while(flag);
+            pCruza.add(pc1);
+            pCruza.add(pc2);
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            inaux2 = new Individuo((ArrayList<Alelo>) individuos.get(i+1).clone());
+            
+            for (int j = pc2; j >= pc1; j--){
+                inaux.reamplazarAlelo(j,individuos.get(i+1).get(j).getValor());
+                inaux2.reamplazarAlelo(j,individuos.get(i).get(j).getValor());
+            }
+            auxIND.add(inaux);
+            auxIND.add(inaux2);
+	}
+        return new Poblacion(auxIND, pCruza);
+    }
+    
+    /**
+     * Cruza uniformemente distribuida
+     */
+    public Poblacion cruzaUniforme() throws CloneNotSupportedException{
+    	Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<Integer> patron = generaPatronDeCruza();
+        Individuo inaux,inaux2;
+        Integer in;
+        in = getIndividuos();
+        for(int i = 0; i < in; i += 2){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            inaux2 = new Individuo((ArrayList<Alelo>) individuos.get(i+1).clone());
+            for (int j = 0; j < patron.size(); j++){
+                inaux.reamplazarAlelo(patron.get(j),individuos.get(i+1).get(patron.get(j)).getValor());
+                inaux2.reamplazarAlelo(patron.get(j),individuos.get(i).get(patron.get(j)).getValor());
+            }
+            auxIND.add(inaux2);
+            auxIND.add(inaux);
+        }
+        // Imprime el patros de cruza que cambiará a la poblacion en esta generacion
+        //System.out.println("Patron de cruza" + patron);
+        return new Poblacion(auxIND, new ArrayList<Integer>());
+    }
+    
+    /**
+     * Cruza uniformemente distribuida
+     */
+    public Poblacion cruzaAcentuada() throws CloneNotSupportedException{
+    	Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<Integer> patron = generaPatronDeCruza();
+        Individuo inaux,inaux2;
+        Integer in,contador,al;
+        Boolean flag;
+        in = getIndividuos();
+        al = individuos.get(0).getAlelos();
+        System.out.println(patron);
+        for(int i = 0; i < in; i += 2){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            inaux2 = new Individuo((ArrayList<Alelo>) individuos.get(i+1).clone());
+            flag = true;
+            contador = 1;
+            for (int j = patron.get(0); j < al; j++){
+                if(patron.get(contador) == j){
+                    flag = !flag;
+                    contador++;
+                    if(contador == patron.size())
+                        contador = 0;
+                }
+                //Muestra el intercambio de lugares que se cambina y los que no por medio de la bandera
+                //System.out.println(flag + " " + contador + " " + j);
+                if(flag){
+                    inaux.reamplazarAlelo(j,individuos.get(i+1).get(j).getValor());
+                    inaux2.reamplazarAlelo(j,individuos.get(i).get(j).getValor());
+                }
+            }
+            auxIND.add(inaux2);
+            auxIND.add(inaux);
+        }
+        // Imprime el patros de cruza que cambiará a la poblacion en esta generacion
+        System.out.println("Patron de cruza" + patron);
+        return new Poblacion(auxIND, new ArrayList<Integer>());
+    }
+    
+    private ArrayList<Integer> generaPatronDeCruza(){
+        Random rn = new Random();
+        ArrayList<Integer> patron = new ArrayList<Integer>();
+        Integer cantidad,longitud;
+        longitud = individuos.get(0).getAlelos();
+        Integer aux,anterior;
+        Boolean flag = false;
+        cantidad = longitud;
+        cantidad /= 2;
+        for(int i = 0;i < cantidad ; i++){
+            aux = rn.nextInt(longitud);
+            if(i != 0){
+                do{
+                    for(int x = 0; x < patron.size(); x++){
+                        if(patron.get(x) == aux){
+                            flag = true;
+                            aux = rn.nextInt(longitud);
+                            break;
+                        }
+                        else
+                            flag = false;
+                    }
+                }while(flag);
+            }
+            patron.add(aux);
+        }
+        Collections.sort(patron);
+        return patron;
+    }
+    
     /**
      * La mutación se hace a un alelo de todos los individuos aleatoriamente
      * @return 
