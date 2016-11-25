@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package poblacion;
+package poblacionBinario;
 
 import java.util.ArrayList;
 
@@ -77,20 +77,35 @@ public class Generacion {
     }
 
     public void imprimirDatosDeCruza(Integer generacion){
+        ArrayList<Integer> patron;
         Integer poblacionAnterior = generacion;
         Integer poblacionAImprimir = generacion + 1;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
+        Integer counterPatron;
         num = 0;
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
-        if(actual.getPuntoDeCruza().isEmpty()){
-            System.out.println("No.\t | Cruza\t | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+        patron = poblacion.get(poblacionAnterior).getPatron();
+        if(!aux.getPatron().isEmpty()){
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
             for (int x = 0;x<actual.getIndividuos();x++) {
                 ante = aux.getIndividuo(x);
                 in = actual.getIndividuo(x);
-                System.out.println(++num + "\t | " + ante + " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+                System.out.print(num+1 + "\t | ");
+                counterPatron = 0;
+                for(int y = 0; y < ante.getAlelos();y++){
+                    System.out.print(ante.get(y));
+                    if(patron.get(counterPatron) == y){
+                        System.out.print("!");
+                        counterPatron++;
+                        if (counterPatron == patron.size()) {
+                            counterPatron = 0;
+                        }
+                    }
+                }
+                System.out.println(" |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
             }
         }
         else{
@@ -99,6 +114,92 @@ public class Generacion {
                 ante = aux.getIndividuo(x);
                 in = actual.getIndividuo(x);
                 System.out.println(num+1 + "\t | " + ante + " |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+            }
+        }
+        System.out.println("Suma valor: " + actual.aptitud());
+        System.out.println("Promedio: " + actual.promedioAptitud());
+        System.out.println("Max: " + actual.maxAptitud());
+    }
+    
+    public void imprimirDatosDeCruza(){
+        ArrayList<Integer> patron,puntoDeCruza;
+        ArrayList<ArrayList<Integer>> patronMultiple;
+        Integer generacion = poblacion.size()-1;
+        Integer poblacionAnterior = 0;
+        Integer poblacionAImprimir = generacion;
+        Integer num;
+        Poblacion actual,aux;
+        Individuo in,ante;
+        Integer counterPatron;
+        num = 0;
+        actual = poblacion.get(poblacionAImprimir);
+        aux = poblacion.get(poblacionAnterior);
+        patron = poblacion.get(poblacionAnterior).getPatron();
+        puntoDeCruza = poblacion.get(poblacionAImprimir).getPuntoDeCruza();
+        patronMultiple = poblacion.get(poblacionAnterior).getPatronMultiple();
+        if(!aux.getPatron().isEmpty()){
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(++num + "\t | ");
+                counterPatron = 0;
+                for(int y = 0; y < ante.getAlelos();y++){
+                    if(patron.get(counterPatron) == y){
+                        System.out.print("!");
+                        counterPatron++;
+                        if (counterPatron == patron.size()) {
+                            counterPatron = 0;
+                        }
+                    }
+                    System.out.print(ante.get(y));
+                }
+                System.out.println(" |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+            }
+        }
+        if(!actual.getPuntoDeCruza().isEmpty()){
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(num+1 + "\t | ");
+                counterPatron = 0;
+                //System.out.println(" " + puntoDeCruza);
+                //System.out.print("\t " + puntoDeCruza.get(x) + "\t");
+                for (int i = 0; i < ante.getAlelos(); i++) {
+                    System.out.print(ante.get(i));
+                    if(puntoDeCruza.get(x)-1 == i){
+                        System.out.print("|");
+                        counterPatron++;
+                        if (counterPatron == puntoDeCruza.size()) {
+                            counterPatron = 0;
+                        }
+                    }
+                }
+                System.out.println(" |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+            }
+        }
+        if (!aux.getPatronMultiple().isEmpty()) {
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(++num + "\t | ");
+                counterPatron = 0;
+                //System.out.println(" " + puntoDeCruza);
+                //System.out.print("\t " + puntoDeCruza.get(x) + "\t");
+                patron = patronMultiple.get(x);
+                for (int i = 0; i < ante.getAlelos(); i++) {
+                    System.out.print(ante.get(i));
+                    if(patron.get(counterPatron)-1 == i){
+                        System.out.print("|");
+                        counterPatron++;
+                        if (counterPatron == patron.size()) {
+                            counterPatron = 0;
+                        }
+                    }
+                }
+                System.out.println(" \t|\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
             }
         }
         System.out.println("Suma valor: " + actual.aptitud());

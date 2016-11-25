@@ -6,13 +6,14 @@
 package agproyecto;
 
 import graficar.Graficar;
-import poblacion.Generacion;
+import poblacionBinario.Generacion;
+//import poblacionDecimal.Generacion;
 
 /**
  *
  * @author Hatake
  */
-public class AGProyecto {
+public class AGProyecto { 
 	private static Generacion generacion;
 	private static Graficar grafica;
 
@@ -121,9 +122,36 @@ public class AGProyecto {
     }
     
     public static void pactica7() throws CloneNotSupportedException{
-        Integer numGen = 100;//10,30,50,100
+        Integer numGen = 1;
         Double porcientoAMutar = 10.0;
-        Double S = 1.1;
+    	generacion = new Generacion(8,8);
+        for(int x = 0; x < numGen; x++){
+            System.out.println("\nGeneración " + x + "\n");
+            generacion.imprimirDatosDeGeneracion(x*2);
+            
+            System.out.println("\nCruza de un punto de cruza\n");
+            generacion.cruzaUnPunto(x*2);
+            generacion.imprimirDatosDeCruza();
+            
+            System.out.println("\nCruza de dos punto de cruza\n");
+            generacion.cruzaDosPuntos(x*2);
+            generacion.imprimirDatosDeCruza();
+            
+            System.out.println("\nCruza Uniforme\n");
+            generacion.cruzaUniforme(x*2);
+            generacion.imprimirDatosDeCruza();
+            
+            System.out.println("\nCruza Acentuada\n");
+            generacion.cruzaAcentuada(x*2);
+            generacion.imprimirDatosDeCruza();
+        }
+    }
+    
+    public static void pactica8() throws CloneNotSupportedException{
+        
+        Integer numGen = 50;//10,30,50,100
+        Double porcientoAMutar = 10.0;
+        //Double S = 1.1;
         //Double torneo = 70.0;
     	generacion = new Generacion(8,24);
     	grafica = new Graficar();

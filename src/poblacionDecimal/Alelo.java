@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package poblacion;
+package poblacionDecimal;
 
+import poblacionBinario.*;
 import java.util.Random;
 
 /**
@@ -15,7 +16,7 @@ public class Alelo {
     private Integer alelo;
 
     public Alelo(){
-    	alelo = nuevoAlelo();
+    	alelo = 1;
     }
     
     public Alelo(Integer alelo){
@@ -27,30 +28,10 @@ public class Alelo {
     }
 
     public void setValor(Integer val){
+        if (val == 0) {
+            val = 1;
+        }
         alelo = val;
-    }
-
-    private Integer nuevoAlelo(){
-        Random rn = new Random();
-        if (rn.nextBoolean())
-            return 1;
-        else
-            return 0;
-    }
-
-    public Alelo cambiarValor(){
-        if (alelo == 0)
-            alelo = 1;
-        else
-            alelo = 0;
-        return this;
-    }
-    
-    public Alelo XOR(Alelo al){
-        if (this.getValor() != al.getValor())
-            return new Alelo(1);
-        else
-            return new Alelo(0);
     }
         
     @Override
