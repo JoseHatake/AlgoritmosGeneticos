@@ -5,6 +5,7 @@
  */
 package poblacionDecimal;
 
+import java.util.Objects;
 import poblacionBinario.*;
 import java.util.Random;
 
@@ -17,6 +18,30 @@ public class Alelo {
 
     public Alelo(){
     	alelo = 1;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Alelo other = (Alelo) obj;
+        if (!Objects.equals(this.alelo, other.alelo)) {
+            return false;
+        }
+        return true;
     }
     
     public Alelo(Integer alelo){
@@ -36,6 +61,6 @@ public class Alelo {
         
     @Override
     public String toString(){
-    	return alelo + "";
+    	return alelo + " ";
     }
 }

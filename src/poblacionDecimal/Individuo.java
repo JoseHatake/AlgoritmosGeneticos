@@ -52,19 +52,27 @@ public class Individuo implements Comparable{
 
     private void generarIndivudio(Integer numAlelos){
         Random rn  =  new Random();
-        Integer count;
-        Integer aux;
-        individuo.add(new Alelo(rn.nextInt(numAlelos)));
+        Integer count,aux;
+        aux = aux = rn.nextInt(numAlelos+1);;
+        if (aux == 0) {
+            aux = 1;
+        }
+        individuo.add(new Alelo(aux));
         for (int x = 1; x < numAlelos ; x++){
-            aux = rn.nextInt(numAlelos);
+            aux = rn.nextInt(numAlelos+1);
             count = 0;
+            if (aux == 0) {
+                aux = 1;
+            }
             do{
-                if (individuo.get(count).getValor() == aux){
-                    aux = rn.nextInt(numAlelos);
+                if (individuo.get(count++).getValor() == aux){
+                    aux = rn.nextInt(numAlelos+1);
+                    if (aux == 0) {
+                        aux = 1;
+                    }
                     count = 0;
                 }
-                count++;
-            }while(count < numAlelos);
+            }while(count < individuo.size());
             individuo.add(new Alelo(aux));
         }
     }
@@ -72,8 +80,8 @@ public class Individuo implements Comparable{
     public Double aptitud(){
         Double x,operacion;
         x = this.valor();
-        operacion = ((x-5)/(2+Math.sin(x)));
-        //operacion = Math.pow(this.valor(),2);
+        //operacion = ((x-5)/(2+Math.sin(x)));
+        operacion = Math.pow(this.valor(),2);
         return Math.abs(operacion);
     }
 
@@ -124,7 +132,7 @@ public class Individuo implements Comparable{
     public String toString(){
         String buff = new String();
         for(Alelo al: individuo)
-            buff += al.getValor();
+            buff += al;
     	return buff + "";
     }
 

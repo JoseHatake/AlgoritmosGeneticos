@@ -61,32 +61,29 @@ public class Generacion {
         System.out.println("Max: " + actual.maxAptitud());
     }
     
-    public void cruzaUnPunto(Integer generacion) throws CloneNotSupportedException{
-        poblacion.add(poblacion.get(generacion).cruzaUnPunto());
+    public void cruzaOX(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaOX());
     }
     
-    public void cruzaDosPuntos(Integer generacion) throws CloneNotSupportedException{
-        poblacion.add(poblacion.get(generacion).cruzaDosPuntos());
+    public void cruzaPMX(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaPMX());
     }
     
-    public void cruzaUniforme(Integer generacion) throws CloneNotSupportedException{
-        poblacion.add(poblacion.get(generacion).cruzaUniforme());
-    }
-    
-    public void cruzaAcentuada(Integer generacion) throws CloneNotSupportedException{
-        poblacion.add(poblacion.get(generacion).cruzaAcentuada());
+    public void cruzaPBX(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaPBX());
     }
 
     public void imprimirDatosDeCruza(Integer generacion){
         Integer poblacionAnterior = generacion;
         Integer poblacionAImprimir = generacion + 1;
-        Integer num;
+        Integer num,count;
         Poblacion actual,aux;
         Individuo in,ante;
+        Boolean flag = true;
         num = 0;
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
-        if(actual.getPuntoDeCruza().isEmpty()){
+        if(!actual.getPuntoDeCruza().isEmpty()){
             System.out.println("No.\t | Cruza\t | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
             for (int x = 0;x<actual.getIndividuos();x++) {
                 ante = aux.getIndividuo(x);
@@ -94,12 +91,38 @@ public class Generacion {
                 System.out.println(++num + "\t | " + ante + " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
             }
         }
-        else{
-            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
+        else if(!actual.getPatronDeCruza().isEmpty()){
+            System.out.println("No.\t | Cruza\t | Descendencia | P.Cruza");
             for (int x = 0;x<actual.getIndividuos();x++) {
                 ante = aux.getIndividuo(x);
                 in = actual.getIndividuo(x);
-                System.out.println(num+1 + "\t | " + ante + " |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+                System.out.println(++num + "\t | " + ante + " |\t " + in + " |\t " + actual.getPatronDeCruza().get(x));
+            }
+        }
+        else{
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(num+1 + "\t | ");
+                for (int i = 0; i < ante.getAlelos(); i++) {
+                    if (!flag) {
+                        System.out.print(ante.get(i));
+                    }
+                    if ((actual.getPuntoDeCruzaPorIndividuo(num)-1) == i) {
+                        if (flag) {
+                            System.out.print("|"+ante.get(i));
+                        }
+                        else
+                            System.out.print("|");
+                        flag = !flag;
+                        continue;
+                    }
+                    if (flag) {
+                        System.out.print(ante.get(i));
+                    }   
+                }
+                System.out.println(" |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in);
             }
         }
     }

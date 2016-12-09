@@ -6,8 +6,8 @@
 package agproyecto;
 
 import graficar.Graficar;
-import poblacionBinario.Generacion;
-//import poblacionDecimal.Generacion;
+//import poblacionBinario.Generacion;
+import poblacionDecimal.Generacion;
 
 /**
  *
@@ -25,7 +25,7 @@ public class AGProyecto {
     }
 
     public AGProyecto() throws CloneNotSupportedException{
-        pactica7();
+        pactica8();
     }
 
     public static void pactica3() throws CloneNotSupportedException{
@@ -124,7 +124,7 @@ public class AGProyecto {
     public static void pactica7() throws CloneNotSupportedException{
         Integer numGen = 1;
         Double porcientoAMutar = 10.0;
-    	generacion = new Generacion(8,8);
+    	generacion = new Generacion(16,16);
         for(int x = 0; x < numGen; x++){
             System.out.println("\nGeneración " + x + "\n");
             generacion.imprimirDatosDeGeneracion(x*2);
@@ -148,32 +148,15 @@ public class AGProyecto {
     }
     
     public static void pactica8() throws CloneNotSupportedException{
-        
-        Integer numGen = 50;//10,30,50,100
-        Double porcientoAMutar = 10.0;
-        //Double S = 1.1;
-        //Double torneo = 70.0;
-    	generacion = new Generacion(8,24);
-    	grafica = new Graficar();
-    	grafica.setNombreFrame("Generaciones");
-    	grafica.setTitutlo("Probabilidad del fitness de generación");
-    	grafica.setEtiquetaX("Generaciones");
-    	grafica.setEtiquetaY("Fitness");
-        for(int x = 0; x < numGen; x++){
-            System.out.println("\nGeneración " + x + "\n");
-            generacion.imprimirDatosDeGeneracion(x*2);
-            //generacion.cruzaUnPunto(x*2);
-            //generacion.cruzaDosPuntos(x*2);
-            //generacion.cruzaUniforme(x*2);
-            generacion.cruzaAcentuada(x*2);
-            generacion.imprimirDatosDeCruza(x*2);
-            generacion.mutaPorPorcentaje(x*2, porcientoAMutar);
-            generacion.imprimirDatosDeMutacion(x*2,porcientoAMutar);
-            //generacion.get((x+1)*2).seleccionarPorRuletaConRanking(S);
-            //generacion.get((x+1)*2).seleccionarPorTorneoP(torneo);
-        }
-        grafica.addSerie(generacion.maximos(numGen),"Máximos");
-        grafica.addSerie(generacion.minimos(numGen),"Mínimos");
-    	grafica.dibujaGrafica();
+    	generacion = new Generacion(10,10);
+//        System.out.println("Cruza OX");
+//        generacion.cruzaOX(0);
+//        generacion.imprimirDatosDeCruza(0);
+//        System.out.println("Cruza PMX");
+//        generacion.cruzaPMX(0);
+//        generacion.imprimirDatosDeCruza(1);
+//        System.out.println("Cruza PBX");
+        generacion.cruzaPBX(0);
+        generacion.imprimirDatosDeCruza(0);
     }
 }
