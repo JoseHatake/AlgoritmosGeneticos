@@ -149,14 +149,14 @@ public class AGProyecto {
     
     public static void pactica8() throws CloneNotSupportedException{
     	generacion = new Generacion(10,10);
-//        System.out.println("Cruza OX");
-//        generacion.cruzaOX(0);
-//        generacion.imprimirDatosDeCruza(0);
-//        System.out.println("Cruza PMX");
-//        generacion.cruzaPMX(0);
-//        generacion.imprimirDatosDeCruza(1);
-//        System.out.println("Cruza PBX");
-        generacion.cruzaPBX(0);
+        System.out.println("Cruza OX");
+        generacion.cruzaOX(0);
         generacion.imprimirDatosDeCruza(0);
+        System.out.println("Cruza PMX");
+        generacion.cruzaPMX(0);
+        generacion.imprimirDatosDeCruza(1);
+        System.out.println("Cruza PBX");
+        generacion.cruzaPBX(0);
+        generacion.imprimirDatosDeCruza(2);
     }
 }

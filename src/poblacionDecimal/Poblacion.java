@@ -27,11 +27,6 @@ public class Poblacion {
     	puntoDeCruza = new ArrayList<Integer>();
     	generarPolacion(alelos,individuos);
     }
-
-    public Poblacion(ArrayList<Individuo> in, ArrayList<Integer> pdc){
-    	individuos = in;
-    	puntoDeCruza = pdc;
-    }
     
     public Poblacion(ArrayList<Individuo> in,ArrayList<Integer> pdc,ArrayList<ArrayList<Integer>> path){
         individuos = in;
@@ -189,7 +184,7 @@ public class Poblacion {
             auxIND.add(inaux);
             auxIND.add(inaux2);
 	}
-        return new Poblacion(auxIND, pCruza);
+        return new Poblacion(auxIND, pCruza,new ArrayList<ArrayList<Integer>>());
     }
     
     public Poblacion cruzaPMX() throws CloneNotSupportedException{
@@ -288,7 +283,7 @@ public class Poblacion {
             auxIND.add(inaux);
             auxIND.add(inaux2);
 	}
-        return new Poblacion(auxIND, pCruza);
+        return new Poblacion(auxIND, pCruza,new ArrayList<ArrayList<Integer>>());
     }
     
     public Poblacion cruzaPBX() throws CloneNotSupportedException{

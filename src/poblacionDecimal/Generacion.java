@@ -83,15 +83,7 @@ public class Generacion {
         num = 0;
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
-        if(!actual.getPuntoDeCruza().isEmpty()){
-            System.out.println("No.\t | Cruza\t | Descendencia | Valor X\t\t | Aptitud F(x) = x^2\n");
-            for (int x = 0;x<actual.getIndividuos();x++) {
-                ante = aux.getIndividuo(x);
-                in = actual.getIndividuo(x);
-                System.out.println(++num + "\t | " + ante + " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
-            }
-        }
-        else if(!actual.getPatronDeCruza().isEmpty()){
+        if(!actual.getPatronDeCruza().isEmpty()){
             System.out.println("No.\t | Cruza\t | Descendencia | P.Cruza");
             for (int x = 0;x<actual.getIndividuos();x++) {
                 ante = aux.getIndividuo(x);
