@@ -151,12 +151,18 @@ public class AGProyecto {
     	generacion = new Generacion(10,10);
         System.out.println("Cruza OX");
         generacion.cruzaOX(0);
-        generacion.imprimirDatosDeCruza(0);
+        generacion.imprimirDatosDeCruza();
         System.out.println("Cruza PMX");
         generacion.cruzaPMX(0);
-        generacion.imprimirDatosDeCruza(1);
+        generacion.imprimirDatosDeCruza();
         System.out.println("Cruza PBX");
         generacion.cruzaPBX(0);
-        generacion.imprimirDatosDeCruza(2);
+        generacion.imprimirDatosDeCruza();
+        System.out.println("Cruza OBX");
+        generacion.cruzaOBX(0);
+        generacion.imprimirDatosDeCruza();
+        System.out.println("Cruza CCX");
+        generacion.cruzaCCX(0);
+        generacion.imprimirDatosDeCruza();
     }
 }

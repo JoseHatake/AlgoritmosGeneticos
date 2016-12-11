@@ -72,10 +72,64 @@ public class Generacion {
     public void cruzaPBX(Integer generacion) throws CloneNotSupportedException{
         poblacion.add(poblacion.get(generacion).cruzaPBX());
     }
+    
+    public void cruzaOBX(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaOBX());
+    }
+    
+    public void cruzaCCX(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).cruzaCCX());
+    }
 
     public void imprimirDatosDeCruza(Integer generacion){
         Integer poblacionAnterior = generacion;
         Integer poblacionAImprimir = generacion + 1;
+        Integer num,count;
+        Poblacion actual,aux;
+        Individuo in,ante;
+        Boolean flag = true;
+        num = 0;
+        actual = poblacion.get(poblacionAImprimir);
+        aux = poblacion.get(poblacionAnterior);
+        if(!actual.getPatronDeCruza().isEmpty()){
+            System.out.println("No.\t | Cruza\t | Descendencia | P.Cruza");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.println(++num + "\t | " + ante + " |\t " + in + " |\t " + actual.getPatronDeCruza().get(x));
+            }
+        }
+        else{
+            System.out.println("No.\t | Cruza\t | P.Cruza | Descendencia");
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(num+1 + "\t | ");
+                for (int i = 0; i < ante.getAlelos(); i++) {
+                    if (!flag) {
+                        System.out.print(ante.get(i));
+                    }
+                    if ((actual.getPuntoDeCruzaPorIndividuo(num)-1) == i) {
+                        if (flag) {
+                            System.out.print("|"+ante.get(i));
+                        }
+                        else
+                            System.out.print("|");
+                        flag = !flag;
+                        continue;
+                    }
+                    if (flag) {
+                        System.out.print(ante.get(i));
+                    }   
+                }
+                System.out.println(" |\t " + actual.getPuntoDeCruzaPorIndividuo(num++)+ " |\t " + in);
+            }
+        }
+    }
+    
+    public void imprimirDatosDeCruza(){
+        Integer poblacionAnterior = 0;
+        Integer poblacionAImprimir = poblacion.size()-1;
         Integer num,count;
         Poblacion actual,aux;
         Individuo in,ante;

@@ -327,10 +327,10 @@ public class Poblacion {
                 else
                     inaux2.reamplazarAlelo(j, -1);
             }
-            Collections.sort(acumulado);
-            Collections.sort(acumulado2);
             patron.add(acumulado);
             patron.add(acumulado2);
+            Collections.sort(acumulado);
+            Collections.sort(acumulado2);
             counter = 0;
             counter2 = 0;
             for (int j = 0; j < al; j++) {
@@ -361,6 +361,136 @@ public class Poblacion {
             }
             auxIND.add(inaux);
             auxIND.add(inaux2);
+	}
+        return new Poblacion(auxIND, pCruza, patron);
+    }
+    
+    public Poblacion cruzaOBX() throws CloneNotSupportedException{
+    	puntoDeCruza = new ArrayList<Integer>();
+    	Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<Integer> pCruza = new ArrayList<Integer>();
+        ArrayList<ArrayList<Integer>> patron = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> acumulado,acumulado2,tmp,tmp2;
+        Individuo inaux,inaux2;
+    	Integer in,al,counter,counter2;
+        Double porcentaje1,porcentaje2;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i += 2){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            inaux2 = new Individuo((ArrayList<Alelo>) individuos.get(i+1).clone());
+            acumulado = new ArrayList<Integer>();
+            acumulado2 = new ArrayList<Integer>();
+            porcentaje1 = rn.nextDouble()*100.0;
+            porcentaje2 = rn.nextDouble()*100.0;
+            tmp = generaPatronDeCruzaPorcentual(porcentaje1);
+            tmp2 = generaPatronDeCruzaPorcentual(porcentaje2);
+            counter = 0;
+            counter2 = 0;
+            for (int j = 0; j < al; j++) {
+                if (tmp.get(counter) == j) {
+                    acumulado.add(individuos.get(i).get(j).getValor());//Numeros del primer padre
+                    counter++;
+                    if (counter == tmp.size())
+                        counter = 0;
+                }
+                if (tmp2.get(counter2) == j) {
+                    acumulado2.add(individuos.get(i+1).get(j).getValor());
+                    counter2++;
+                    if (counter2 == tmp2.size())
+                        counter2 = 0;
+                }
+            }
+            patron.add(acumulado);
+            patron.add(acumulado2);
+            counter = 0;
+            counter2 = 0;
+            for (int j = 0; j < al; j++) {
+                if (acumulado.get(counter).equals(inaux2.get(j).getValor())) {//En el hijo 2 quito los elemetos
+                    inaux2.reamplazarAlelo(j,-1);
+                    j = -1;
+                    counter++;
+                    if (counter == acumulado.size())
+                        counter = 0;
+                }
+            }
+            counter = 0;
+            for (int j = 0; j < al; j++) {
+                if (acumulado2.get(counter).equals(inaux.get(j).getValor())) {
+                    inaux.reamplazarAlelo(j,-1);
+                    j = -1;
+                    counter++;
+                    if (counter == acumulado2.size())
+                        counter = 0;
+                }
+            }
+            counter = 0;
+            for (int j = 0; j < al; j++) {
+                if (inaux.get(j).getValor() == -1) {
+                    inaux.reamplazarAlelo(j, acumulado2.get(counter));
+                    counter++;
+                    if (counter == acumulado2.size())
+                        counter = 0;
+                }
+                if (inaux2.get(j).getValor() == -1) {
+                    inaux2.reamplazarAlelo(j, acumulado.get(counter2));//En el hijo 2 vuelvo a colocar los elementos dependiendo del orden del padre 1
+                    counter2++;
+                    if (counter2 == acumulado.size())
+                        counter2 = 0;
+                }
+            }
+            auxIND.add(inaux2);//El hijo 2 pasa a ser el hijo 1
+            auxIND.add(inaux);
+	}
+        return new Poblacion(auxIND, pCruza, patron);
+    }
+    
+    public Poblacion cruzaCCX() throws CloneNotSupportedException{
+    	puntoDeCruza = new ArrayList<Integer>();
+    	Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<Integer> pCruza = new ArrayList<Integer>();
+        ArrayList<ArrayList<Integer>> patron = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> aux,acumulado,acumulado2,tmp,tmp2;
+        Individuo inaux,inaux2;
+    	Integer in,al,counter,counter2,selected;
+        Boolean flag;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i += 2){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            inaux2 = new Individuo((ArrayList<Alelo>) individuos.get(i+1).clone());
+            aux = new ArrayList<Integer>();
+            acumulado = new ArrayList<Integer>();
+            acumulado2 = new ArrayList<Integer>();
+            selected = rn.nextInt(al+1);
+            if (selected == 0) {
+                selected = 1;
+            }
+            flag = true;
+            do {
+                acumulado.add(selected);
+                for (int j = 0; j < al; j++) {
+                    if (individuos.get(i).get(j).getValor() == selected) {
+                        selected = individuos.get(i+1).get(j).getValor();
+                        aux.add(j);
+                        if (acumulado.get(0) == selected)
+                            flag = false;
+                        break;
+                    }
+                }
+                acumulado2.add(selected);
+            } while (flag);
+            Collections.sort(aux);
+            for (int j = 0; j < aux.size(); j++) {
+                inaux.reamplazarAlelo(aux.get(j), individuos.get(i+1).get(aux.get(j)).getValor());
+                inaux2.reamplazarAlelo(aux.get(j), individuos.get(i).get(aux.get(j)).getValor());
+            }
+            patron.add(acumulado);
+            patron.add(acumulado2);
+            auxIND.add(inaux2);
+            auxIND.add(inaux);
 	}
         return new Poblacion(auxIND, pCruza, patron);
     }
