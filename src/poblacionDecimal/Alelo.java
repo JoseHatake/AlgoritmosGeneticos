@@ -58,6 +58,10 @@ public class Alelo {
         }
         alelo = val;
     }
+
+    public int compareTo(Integer anotherInteger) {
+        return alelo.compareTo(anotherInteger);
+    }
         
     @Override
     public String toString(){

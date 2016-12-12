@@ -172,25 +172,59 @@ public class Generacion {
             }
         }
     }
+    
+    public void mutaInsert(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).mutaInsert());
+    }
+    
+    public void mutaDesplazamiento(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).mutaDesplazamiento());
+    }
+    
+    public void mutaIntercambioR(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).mutaIntercambioR());
+    }
+    
+    public void mutaHeuristica(Integer generacion) throws CloneNotSupportedException{
+        poblacion.add(poblacion.get(generacion).mutaHeuristica());
+    }
 
-    public void imprimirDatosDeMutacion(Integer generacion,Double porcentaje){
-        Integer poblacionAnterior = generacion + 1;
-        Integer poblacionAImprimir = generacion + 2;
+    public void imprimirDatosDeMutacion(){
+        ArrayList<ArrayList<String>> patron = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<Integer>> patronNum = new ArrayList<ArrayList<Integer>>();
+        Integer poblacionAnterior = 0;
+        Integer poblacionAImprimir = poblacion.size()-1;
         Integer num;
         Poblacion actual,aux;
         Individuo in,ante;
         num = 1;
         actual = poblacion.get(poblacionAImprimir);
         aux = poblacion.get(poblacionAnterior);
-        System.out.println("No.\t | Descendencia\t | Mutación | Valor X\t\t | Aptitud F(x) = x^2\n");
-        for (int x = 0;x<actual.getIndividuos();x++) {
-            ante = aux.getIndividuo(x);
-            in = actual.getIndividuo(x);
-            System.out.println(num++ + "\t | " + ante + " |\t " + in + " |\t " + in.valor() + " |\t " + in.aptitud());
+        patron = poblacion.get(poblacionAImprimir).getPatronDeMuta();
+        patronNum = poblacion.get(poblacionAImprimir).getPatronDeCruza();
+        System.out.println("No.\t | Descendencia\t | Mutación\t | Patrón de mutación");
+        if (patron.isEmpty()) {
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(num++ + "\t | " + ante + " |\t " + in + " |\t ");
+                for (int i = 0; i < patronNum.get(x).size(); i++) {
+                    System.out.print(patronNum.get(x).get(i) + " ");
+                }
+                System.out.println();
+            }
         }
-        System.out.println("Suma valor: " + actual.aptitud());
-        System.out.println("Promedio: " + actual.promedioAptitud());
-        System.out.println("Max: " + actual.maxAptitud());
+        else{
+            for (int x = 0;x<actual.getIndividuos();x++) {
+                ante = aux.getIndividuo(x);
+                in = actual.getIndividuo(x);
+                System.out.print(num++ + "\t | " + ante + " |\t " + in + " |\t ");
+                for (int i = 0; i < patron.get(x).size(); i++) {
+                    System.out.print(patron.get(x).get(i) + " ");
+                }
+                System.out.println();
+            }
+        }
     }
     
     /**

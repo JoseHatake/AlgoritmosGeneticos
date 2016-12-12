@@ -20,6 +20,15 @@ import java.util.logging.Logger;
 public class Poblacion {
     private ArrayList<Individuo> individuos;
     private ArrayList<Integer> puntoDeCruza;
+    private ArrayList<ArrayList<String>> patronDeMuta;
+
+    public ArrayList<ArrayList<String>> getPatronDeMuta() {
+        return patronDeMuta;
+    }
+
+    public void setPatronDeMuta(ArrayList<ArrayList<String>> patronDeMuta) {
+        this.patronDeMuta = patronDeMuta;
+    }
     private ArrayList<ArrayList<Integer>> patronDeCruza;
 
     public Poblacion(Integer alelos,Integer individuos){
@@ -32,6 +41,12 @@ public class Poblacion {
         individuos = in;
         puntoDeCruza = pdc;
         patronDeCruza = path;
+        patronDeMuta = new ArrayList<ArrayList<String>>();
+    }
+    
+    public Poblacion(ArrayList<Individuo> in,ArrayList<ArrayList<String>> pdm){
+        individuos = in;
+        patronDeMuta = pdm;
     }
 
     public ArrayList<ArrayList<Integer>> getPatronDeCruza() {
@@ -545,6 +560,150 @@ public class Poblacion {
         }
         Collections.sort(seleccion);
         return seleccion;
+    }
+    
+    public Poblacion mutaInsert() throws CloneNotSupportedException{
+        Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<ArrayList<String>> patronM = new ArrayList<ArrayList<String>>();
+        ArrayList<String> patron = new ArrayList<String>();
+        Individuo inaux;
+    	Integer in,al,selected,selected2;
+        Boolean flag;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i++){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            patron = new ArrayList<String>();
+            selected = rn.nextInt(al+1);
+            flag = true;
+            if (selected == 0)
+                selected++;
+            if (selected == al+1)
+                selected--;
+            do{
+                selected2 = rn.nextInt(al+1);
+                if(selected2 >= selected)
+                    flag = false;
+            }while(flag);
+            patron.add(selected2 + "->" + selected);
+            inaux.reamplazarAlelo(selected-1,individuos.get(i).get(selected2-1).getValor());
+            for (int j = selected-1; j < al-1; j++) {
+                if (j >= selected2-1)
+                    inaux.reamplazarAlelo(j+1, individuos.get(i).get(j+1).getValor());
+                else
+                    inaux.reamplazarAlelo(j+1,individuos.get(i).get(j).getValor());
+            }
+            patronM.add(patron);
+            auxIND.add(inaux);
+        }
+        return new Poblacion(auxIND, patronM);
+    }
+    
+    public Poblacion mutaDesplazamiento() throws CloneNotSupportedException{
+        Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<ArrayList<String>> patronM = new ArrayList<ArrayList<String>>();
+        ArrayList<String> patron = new ArrayList<String>();
+        Individuo inaux,aux;
+    	Integer in,al,selected,selected2,veces;
+        Boolean flag;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i++){
+            veces = rn.nextInt(al);
+            if (veces == 0)
+                veces = 1;
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            patron = new ArrayList<String>();
+            for (int k = 0; k < veces; k++) {
+                aux = new Individuo(inaux);
+                selected = rn.nextInt(al+1);
+                flag = true;
+                if (selected == 0)
+                    selected++;
+                if (selected == al+1)
+                    selected--;
+                do{
+                    selected2 = rn.nextInt(al+1);
+                    if(selected2 >= selected)
+                        flag = false;
+                }while(flag);
+                patron.add(selected2 + "->" + selected);
+                inaux.reamplazarAlelo(selected-1,aux.get(selected2-1).getValor());
+                for (int j = selected-1; j < al-1; j++) {
+                    if (j >= selected2-1)
+                        inaux.reamplazarAlelo(j+1,aux.get(j+1).getValor());
+                    else
+                        inaux.reamplazarAlelo(j+1,aux.get(j).getValor());
+                }
+            }
+            patronM.add(patron);
+            auxIND.add(inaux);
+        }
+        return new Poblacion(auxIND, patronM);
+    }
+    
+    public Poblacion mutaIntercambioR() throws CloneNotSupportedException{
+        Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<ArrayList<String>> patronM = new ArrayList<ArrayList<String>>();
+        ArrayList<String> patron = new ArrayList<String>();
+        Individuo inaux;
+    	Integer in,al,selected,selected2,aux;
+        Boolean flag;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i++){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            patron = new ArrayList<String>();
+            selected = rn.nextInt(al+1);
+            flag = true;
+            if (selected == 0)
+                selected++;
+            if (selected == al+1)
+                selected--;
+            do{
+                selected2 = rn.nextInt(al+1);
+                if(selected2 >= selected)
+                    flag = false;
+            }while(flag);
+            patron.add(selected + "<->" + selected2);
+            aux = individuos.get(i).get(selected-1).getValor();
+            inaux.reamplazarAlelo(selected-1,individuos.get(i).get(selected2-1).getValor());
+            inaux.reamplazarAlelo(selected2-1, aux);
+            patronM.add(patron);
+            auxIND.add(inaux);
+        }
+        return new Poblacion(auxIND, patronM);
+    }
+    
+    public Poblacion mutaHeuristica() throws CloneNotSupportedException{
+        patronDeMuta = new ArrayList<ArrayList<String>>();
+        Random rn = new Random();
+    	ArrayList<Individuo> auxIND = new ArrayList<Individuo>();
+        ArrayList<ArrayList<Integer>> patronM = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> patron = new ArrayList<Integer>();
+        ArrayList<Integer> patronTMP = new ArrayList<Integer>();
+        ArrayList<Integer> tmp;
+        Individuo inaux;
+    	Integer in,al;
+    	in = getIndividuos();
+    	al = individuos.get(0).getAlelos();
+    	for (int i = 0; i < in; i++){
+            inaux = new Individuo((ArrayList<Alelo>) individuos.get(i).clone());
+            patron = new ArrayList<Integer>();
+            tmp = new ArrayList<Integer>();
+            patronTMP = generaPatronDeCruzaPorcentual(rn.nextDouble()*100.0);
+            for (int j = 0; j < patronTMP.size(); j++)
+                tmp.add(individuos.get(i).get(patronTMP.get(j)).getValor());
+            Collections.sort(tmp);
+            for (int j = 0; j < patronTMP.size(); j++)
+                inaux.reamplazarAlelo(patronTMP.get(j),tmp.get(j));
+            patronM.add(patronTMP);
+            auxIND.add(inaux);
+        }
+        return new Poblacion(auxIND,new ArrayList<Integer>(),patronM);
     }
     
     private Double ruletaDouble(){

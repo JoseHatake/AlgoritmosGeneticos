@@ -25,7 +25,7 @@ public class AGProyecto {
     }
 
     public AGProyecto() throws CloneNotSupportedException{
-        pactica8();
+        pactica9();
     }
 
     public static void pactica3() throws CloneNotSupportedException{
@@ -164,5 +164,21 @@ public class AGProyecto {
         System.out.println("Cruza CCX");
         generacion.cruzaCCX(0);
         generacion.imprimirDatosDeCruza();
+    }
+    
+    public static void pactica9() throws CloneNotSupportedException{
+    	generacion = new Generacion(10,10);
+        System.out.println("Mutación por Inserción");
+        generacion.mutaInsert(0);
+        generacion.imprimirDatosDeMutacion();
+        System.out.println("Mutación por Desplazamiento");
+        generacion.mutaDesplazamiento(0);
+        generacion.imprimirDatosDeMutacion();
+        System.out.println("Mutación por Intercambi Recíproco");
+        generacion.mutaIntercambioR(0);
+        generacion.imprimirDatosDeMutacion();
+        System.out.println("Mutación Heurística");
+        generacion.mutaHeuristica(0);
+        generacion.imprimirDatosDeMutacion();
     }
 }
