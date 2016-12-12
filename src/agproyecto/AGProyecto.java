@@ -174,7 +174,7 @@ public class AGProyecto {
         System.out.println("Mutación por Desplazamiento");
         generacion.mutaDesplazamiento(0);
         generacion.imprimirDatosDeMutacion();
-        System.out.println("Mutación por Intercambi Recíproco");
+        System.out.println("Mutación por Intercambio Recíproco");
         generacion.mutaIntercambioR(0);
         generacion.imprimirDatosDeMutacion();
         System.out.println("Mutación Heurística");

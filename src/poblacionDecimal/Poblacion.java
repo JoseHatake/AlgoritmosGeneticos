@@ -698,6 +698,7 @@ public class Poblacion {
             for (int j = 0; j < patronTMP.size(); j++)
                 tmp.add(individuos.get(i).get(patronTMP.get(j)).getValor());
             Collections.sort(tmp);
+            Collections.reverse(tmp);
             for (int j = 0; j < patronTMP.size(); j++)
                 inaux.reamplazarAlelo(patronTMP.get(j),tmp.get(j));
             patronM.add(patronTMP);
